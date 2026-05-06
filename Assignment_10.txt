@@ -1,0 +1,39 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
+from sklearn.naive_bayes import GaussianNB
+
+df = pd.read_csv("iris.csv")
+df.head()
+
+df.info()
+
+df.isnull().sum()
+
+plt.figure(figsize=(10,6))
+sns.scatterplot(x='PetalLengthCm',y='PetalWidthCm',data=df)
+
+X = df[:,:-1]
+y = df[:,-1]
+
+X_train,X_test,y_train,y_test=train_test_split(
+    X,y,test_size=0.3,random_state-42
+)
+model = GaussianNB()
+model.fit(X_train,y_train)
+y_pred = model.predict(X_test)
+print(y_pred)
+cm = confusion_matrix(y_test,y_pred)
+cm
+accuracy = accuracy_score(y_test,y_pred)
+error_rate = 1 - accuracy
+precision = precision_score(y_test,y_pred,average='macro')
+recall = recall_score(y_test,y_pred,average='macro')
+print(accuracy)
+print(error_rate)
+print(precision)
+print(recall)

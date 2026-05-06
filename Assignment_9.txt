@@ -1,0 +1,59 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import mean_squared_error, confusion_matrix, r2_score
+from sklearn.preprocessing import StandardScaler
+
+df = pd.read_csv("Social_Network_Ads.csv")
+df.isnull().sum()
+X = df[['Age','EstimatedSalary']]
+y = df['Purchased']
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size= 0.25, random_state=0)
+print("Training size:", X_train.shape)
+print("Testing size:", X_test.shape)
+
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+model = LogisticRegression()
+model.fit(X_train,y_train)
+y_pred = model.predict(X_test)
+
+cm = confusion_matrix(y_test,y_pred)
+cm
+
+TN =cm[0][0]
+FP=cm[0][1]
+FN=cm[1][0]
+TP=cm[1][1]
+
+print("TN :",TN)
+print("FP :",FP)
+print("FN :",FN)
+print("TP :",TP)
+
+sum_all = TP + TN + FP + FN
+
+accuracy = (TP + TN)/(TP + TN + FP + FN)
+
+error_rate = (FP + FN)/(TP + TN + FP + FN)
+
+precision = TP/(TP+FP)
+
+recall = TP/(TP + FN)
+
+print("accuracy = (TP + TN)/(TP + TN + FP + FN) : ",accuracy)
+print("error_rate = (FP + FN)/(TP+TN+FP+FN) : ",error_rate)
+print("precision = TP/(TP + FP) : ",precision)
+print("recall = TP/(TP + FN) : ",recall)
+
+sns.heatmap(cm,annot=True,cmap="Blues")
+
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Confusion Matrix")
+plt.show()

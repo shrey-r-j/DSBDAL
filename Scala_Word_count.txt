@@ -1,0 +1,41 @@
+val textFile = spark.read.textFile("sample.txt")
+
+val wordCounts = textFile
+  .flatMap(line => line.split(" "))
+  .groupBy("value")
+  .count()
+
+wordCounts.show()
+
+
+
+val arr = Array(5, 3, 2, 4, 1)
+
+for (i <- 0 until arr.length) {
+  for (j <- 0 until arr.length - 1) {
+    if (arr(j) > arr(j + 1)) {
+      val temp = arr(j)
+      arr(j) = arr(j + 1)
+      arr(j + 1) = temp
+    }
+  }
+}
+
+println(arr.mkString(" "))
+
+
+val arr = Array(10,11,3,9,15)
+
+for(i <- 0 until arr.length){
+    for(j <- 0 until arr.length - 1){
+        if(arr(j) > arr(j+1)){
+            val temp = arr(j)
+            arr(j) = arr(j+1)
+            arr(j+1) = temp
+        }
+    }
+}
+
+for(i <- 0 until arr.length){
+    println(arr(i))
+}
